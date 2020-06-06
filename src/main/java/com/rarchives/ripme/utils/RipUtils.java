@@ -13,6 +13,7 @@ import com.rarchives.ripme.ripper.rippers.EromeRipper;
 import com.rarchives.ripme.ripper.rippers.ImgurRipper;
 import com.rarchives.ripme.ripper.rippers.VidbleRipper;
 import com.rarchives.ripme.ripper.rippers.GfycatRipper;
+import com.rarchives.ripme.ripper.rippers.RedgifsRipper;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -75,6 +76,17 @@ public class RipUtils {
                 logger.warn("Exception while retrieving gfycat page:", e);
             }
             return result;
+        }
+        else if (url.getHost().endsWith("redgifs.com")) {
+            try {
+                logger.debug("Fetching redgifs page " + url);
+                String videoURL = RedgifsRipper.getVideoURL(url);
+                logger.debug("Got redgifs URL: " + videoURL);
+                result.add(new URL(videoURL));
+            } catch ( IOException e ) {
+                // Do nothing
+                logger.warn("Exception while retrieving redgifs page:", e);
+            }
         }
         else if (url.toExternalForm().contains("vidble.com/album/") || url.toExternalForm().contains("vidble.com/show/")) {
             try {
